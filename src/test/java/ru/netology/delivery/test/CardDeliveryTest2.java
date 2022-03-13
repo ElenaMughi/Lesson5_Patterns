@@ -1,14 +1,16 @@
+package ru.netology.delivery.test;
+
 import com.codeborne.selenide.Condition;
-import com.github.javafaker.Faker;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
 import java.time.Duration;
+import ru.netology.delivery.data.RegistrationDto;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
@@ -16,32 +18,26 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class CardDeliveryTest2 {
 
-    private static Faker faker;
-
-    String getDate(int days) {
-        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-    }
-
-    @BeforeAll
-    static void setUpAll() {
-        faker = new Faker(new Locale("ru"));
-    }
+    private RegistrationDto.RegistrationInfo registrationInfo;
 
     @BeforeEach
     public void setUp() {
-        open("http://localhost:9999");  // вопрос: open("http://0.0.0.0:9999");
+        open("http://localhost:9999");
+        registrationInfo = RegistrationDto.getRegistrationInfo();
+    }
+
+    private static String getDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     @Test
     public void shouldSendSimple() {
-
-        String planningDate = getDate(7);
-        String sity = faker.address().cityName();
-        $("[data-test-id='city'] input").setValue(sity);
+        String planningDate = getDate(4);
+        $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(planningDate);
-        $("[data-test-id='name'] input").setValue(faker.name().fullName());
-        $("[data-test-id='phone'] input").setValue(faker.phoneNumber().phoneNumber());
+        $("[data-test-id='name'] input").setValue(registrationInfo.getName());
+        $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
 
         $(withText("Запланировать")).click();
@@ -53,12 +49,11 @@ public class CardDeliveryTest2 {
     public void shouldSendDoubleDate() {
 
         String planningDate = getDate(4);
-        String sity = faker.address().cityName();
-        $("[data-test-id='city'] input").setValue(sity);
+        $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(planningDate);
-        $("[data-test-id='name'] input").setValue(faker.name().fullName());
-        $("[data-test-id='phone'] input").setValue(faker.phoneNumber().phoneNumber());
+        $("[data-test-id='name'] input").setValue(registrationInfo.getName());
+        $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
 
         $(withText("Запланировать")).click();
