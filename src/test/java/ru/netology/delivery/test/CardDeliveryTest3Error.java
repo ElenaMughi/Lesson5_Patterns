@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class CardDeliveryTest3 {
+public class CardDeliveryTest3Error {
     private RegistrationDto.RegistrationInfo registrationInfo;
 
     String getDate(int days) {

@@ -3,8 +3,8 @@ package ru.netology.delivery.data;
 import lombok.Value;
 import com.github.javafaker.Faker;
 
-import java.io.ObjectInputStream;
-import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class RegistrationDto {
@@ -36,5 +36,9 @@ public class RegistrationDto {
         return new RegistrationInfo(city, name, phone);
     }
 
+
+    public static String getDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
 
 };

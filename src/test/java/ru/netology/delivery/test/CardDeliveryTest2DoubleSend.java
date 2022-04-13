@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class CardDeliveryTest2 {
+public class CardDeliveryTest2DoubleSend {
 
     private RegistrationDto.RegistrationInfo registrationInfo;
 

@@ -1,6 +1,9 @@
 package ru.netology.delivery.test;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
@@ -10,17 +13,18 @@ import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
-public class CardDeliveryTest1 {
+import java.time.Duration;
+
+public class CardDeliveryTest1Simple {
 
     private RegistrationDto.RegistrationInfo registrationInfo;
 
-    String getDate(int days) {
-        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    @BeforeAll
+    public static void setUpAll() {
+        WebDriverManager.chromedriver().setup();
     }
+
 
     @BeforeEach
     public void setUp() {
@@ -31,7 +35,7 @@ public class CardDeliveryTest1 {
     @Test
     public void shouldSendSimple() {
 
-        String planningDate = getDate(4);
+        String planningDate = RegistrationDto.getDate(4);
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
@@ -41,14 +45,14 @@ public class CardDeliveryTest1 {
         $("[data-test-id='agreement']").click();
 
         $(withText("Запланировать")).click();
-        $("[class='notification__content']")
+        $("[data-test-id='success-notification']")
                 .shouldHave(Condition.text("Встреча успешно запланирована на " + planningDate), Duration.ofSeconds(15));
     }
 
     @Test
     public void shouldSendWithDash() {
 
-        String planningDate = getDate(30);
+        String planningDate = RegistrationDto.getDate(30);
         $("[data-test-id='city'] input").setValue("Ростов-на-Дону");
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         $("[data-test-id='date'] input").setValue(planningDate);
@@ -63,7 +67,7 @@ public class CardDeliveryTest1 {
 
     @Test
     public void shouldSendWithSpace() {
-        String planningDate = getDate(3);
+        String planningDate = RegistrationDto.getDate(3);
 
         $("[data-test-id='city'] input").setValue("Нижний Новгород");
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
@@ -79,7 +83,7 @@ public class CardDeliveryTest1 {
 
     @Test
     public void shouldSendPhoneNotPlus() { //теперь позитивный тест
-        String planningDate = getDate(7);
+        String planningDate = RegistrationDto.getDate(7);
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
@@ -94,7 +98,7 @@ public class CardDeliveryTest1 {
 
     @Test
     public void shouldSendPhoneManyNumbers() { //теперь позитивный тест
-        String planningDate = getDate(14);
+        String planningDate = RegistrationDto.getDate(14);
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
@@ -114,7 +118,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue("");
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(3));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(3));
         $("[data-test-id='name'] input").setValue(registrationInfo.getName());
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
@@ -128,7 +132,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue("Moscow");
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(3));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(3));
         $("[data-test-id='name'] input").setValue(registrationInfo.getName());
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
@@ -142,7 +146,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue("Реутов");
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(3));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(3));
         $("[data-test-id='name'] input").setValue(registrationInfo.getName());
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
@@ -168,7 +172,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(0));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(0));
         $("[data-test-id='name'] input").setValue(registrationInfo.getName());
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
@@ -181,7 +185,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(2));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(2));
         $("[data-test-id='name'] input").setValue(registrationInfo.getName());
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
@@ -194,7 +198,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(3));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(3));
         $("[data-test-id='name'] input").setValue("");
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
@@ -207,7 +211,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(3));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(3));
         $("[data-test-id='name'] input").setValue("Ivanov");
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
@@ -221,7 +225,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(3));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(3));
         $("[data-test-id='name'] input").setValue("Николай 2");
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $("[data-test-id='agreement']").click();
@@ -235,7 +239,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(3));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(3));
         $("[data-test-id='name'] input").setValue(registrationInfo.getName());
         $("[data-test-id='phone'] input").setValue("");
         $(withText("Запланировать")).click();
@@ -248,7 +252,7 @@ public class CardDeliveryTest1 {
 
         $("[data-test-id='city'] input").setValue(registrationInfo.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(getDate(3));
+        $("[data-test-id='date'] input").setValue(RegistrationDto.getDate(3));
         $("[data-test-id='name'] input").setValue(registrationInfo.getName());
         $("[data-test-id='phone'] input").setValue(registrationInfo.getPhone());
         $(withText("Запланировать")).click();
