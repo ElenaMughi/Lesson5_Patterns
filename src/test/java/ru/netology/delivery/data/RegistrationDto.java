@@ -1,5 +1,6 @@
 package ru.netology.delivery.data;
 
+import io.qameta.allure.Step;
 import lombok.Value;
 import com.github.javafaker.Faker;
 
@@ -25,6 +26,7 @@ public class RegistrationDto {
 
     private static Faker faker;
 
+    @Step("Получаем данные регистрации")
     public static RegistrationInfo getRegistrationInfo() {
 
         faker = new Faker(new Locale("ru"));
@@ -36,7 +38,7 @@ public class RegistrationDto {
         return new RegistrationInfo(city, name, phone);
     }
 
-
+    @Step("Получаем дату")
     public static String getDate(int days) {
         return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
